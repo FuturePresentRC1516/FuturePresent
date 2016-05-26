@@ -1,0 +1,13 @@
+futurepresent:
+   build: .
+   dockerfile: Dockerfile
+   ports:
+      - "8080:8080"
+   links:
+      - rabbitmq
+
+
+rabbitmq:
+   image: rabbitmq:3-management
+   ports:
+      - "15672:15672"

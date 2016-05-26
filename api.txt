@@ -1,0 +1,358 @@
+GET http://localhost:8080/api/user_birthday?
+    id={user-id}
+
+Response {
+            "status" : "response_status"
+                       "birthday" : "response_birthday"
+	}
+
+"status": 
+                - "ok"
+                - "error"
+
+"birthday":
+                - "mm/dd/yyyy"
+                - ''
+
+					______________________________________
+
+GET http://localhost:8080/api/user_likes?
+    id={user-id}
+
+Response {
+			"status" : "response_status"
+			"movies" : "obj_movies"
+			"music"  : "obj_music"
+			"games"  : "obj_games"
+			"books"  : "obj_books"
+	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"movies":   - { 
+				"movie_id": {
+						 		"Name" : "movie_title"
+					     	}
+			  }
+			- "undefined"
+
+
+
+		
+"music":   - { 
+				"music_id": {
+						 		"Name" : "music_title"
+					     	}
+			 }
+		   - "undefined"
+		
+	
+
+		
+"games":   - { 
+				"game_id": {
+						 		"Name" : "game_title"
+					    	}
+			 }
+		   - "undefined"
+	
+			      
+"books":   - { 
+				"book_id": {
+						 		"Name" : "book_title"
+					 	   }
+			 }
+		   - "undefined"
+		   
+	
+						______________________________________	
+
+GET http://localhost:8080/api/user_movies?
+    id={user-id} 
+ 
+Response {
+			"status" : "response_status"
+			"movies" : "obj_movies"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"movies":   - { 
+				"movie_id": {
+						 		"Name" : "movie_title"
+					     	}
+			  }
+			- "undefined"
+			
+
+					______________________________________
+
+GET http://localhost:8080/api/user_music?
+    id={user-id} 
+ 
+Response {
+			"status" : "response_status"
+			"music" : "obj_music"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"music":   - { 
+				"music_id": {
+						 		"Name" : "music_title"
+					     	}
+			  }
+			- "undefined"
+			
+					______________________________________
+					
+					
+GET http://localhost:8080/api/user_games?
+    id={user-id} 
+ 
+Response {
+			"status" : "response_status"
+			"games" : "obj_game"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"games":   - { 
+				"game_id": {
+						 		"Name" : "game_title"
+					     	}
+			  }
+			- "undefined"	
+			
+			
+								______________________________________
+								
+										
+GET http://localhost:8080/api/user_books?
+    id={user-id} 
+ 
+Response {
+			"status" : "response_status"
+			"books" : "obj_books"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"books":   - { 
+				"book_id": {
+						 		"Name" : "book_title"
+					     	}
+			  }
+			- "undefined"
+			
+								______________________________________
+								
+		
+GET http://localhost:8080/api/user_birthday?
+    id={user-id}
+    friend = {friend-id}
+
+Response {
+            "status" : "response_status"
+                       "birthday" : "response_birthday"
+	}
+
+"status": 
+                - "ok"
+                - "error"
+
+"birthday":
+                - "mm/dd/yyyy"
+                - ''
+                
+					______________________________________
+
+GET http://localhost:8080/api/user_likes?
+    id={user-id}
+    friend = {friend-id}
+
+Response {
+			"status" : "response_status"
+			"movies" : "obj_movies"
+			"music"  : "obj_music"
+			"games"  : "obj_games"
+			"books"  : "obj_books"
+	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"movies":   - { 
+				"movie_id": {
+						 		"Name" : "movie_title"
+					     	}
+			  }
+			- "undefined"
+
+
+
+		
+"music":   - { 
+				"music_id": {
+						 		"Name" : "music_title"
+					     	}
+			 }
+		   - "undefined"
+		
+	
+
+		
+"games":   - { 
+				"game_id": {
+						 		"Name" : "game_title"
+					    	}
+			 }
+		   - "undefined"
+	
+			      
+"books":   - { 
+				"book_id": {
+						 		"Name" : "book_title"
+					 	   }
+			 }
+		   - "undefined"
+		   
+	
+						______________________________________	
+
+GET http://localhost:8080/api/user_movies?
+    id={user-id}
+    friend = {friend-id} 
+ 
+Response {
+			"status" : "response_status"
+			"movies" : "obj_movies"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"movies":   - { 
+				"movie_id": {
+						 		"Name" : "movie_title"
+					     	}
+			  }
+			- "undefined"
+			
+
+					______________________________________
+
+GET http://localhost:8080/api/user_music?
+    id={user-id} 
+    friend = {friend-id}
+ 
+Response {
+			"status" : "response_status"
+			"music" : "obj_music"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"music":   - { 
+				"music_id": {
+						 		"Name" : "music_title"
+					     	}
+			  }
+			- "undefined"
+			
+					______________________________________
+					
+					
+GET http://localhost:8080/api/user_games?
+    id={user-id}
+    friend = {friend-id}
+ 
+Response {
+			"status" : "response_status"
+			"games" : "obj_game"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"games":   - { 
+				"game_id": {
+						 		"Name" : "game_title"
+					     	}
+			  }
+			- "undefined"	
+			
+			
+								______________________________________
+								
+										
+GET http://localhost:8080/api/user_books?
+    id={user-id} 
+    friend = {friend-id}
+ 
+Response {
+			"status" : "response_status"
+			"books" : "obj_books"
+	
+	 	 }
+
+"status": 
+		- "ok"
+		- "error"
+
+
+
+"books":   - { 
+				"book_id": {
+						 		"Name" : "book_title"
+					     	}
+			  }
+			- "undefined"
+   
+  
+
+
+		
+		
+		
+	 

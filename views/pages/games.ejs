@@ -1,0 +1,120 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel='stylesheet' href='../../stylesheets/homepage.css' />
+</head>
+<body class="container">
+    <main>
+        <div id = "wrapper">
+
+            <br>
+            <br>
+
+            <div id="menu">
+                <div id="menu_top">
+                    <ul>
+                        <li><a href="http://localhost:8080/homepage">Home</a></li>
+                        <li><a href="http://localhost:8080/chisiamo">Chi siamo</a></li>
+                        <li><a href="http://localhost:8080/contattaci">Contattaci</a></li>
+                        <li><a href="http://localhost:8080/apis">APIs</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="banner">
+                <img src="../../images/banner.png" height="250" width="960" alt="" />
+            </div>
+
+            <div id="content_wrapper">
+                <div id="content_midd">
+                    <h1>Your likes become items</h1>
+                    <br>
+                    <table class="icons" align="center">
+                        <tbody id="icons_table">
+                        <tr id="icons_table">
+							<td class="icons"><a href=<%= "http://localhost:8080/"+fb_id+"/new_likes"%>><img src="../../images/icons-set_2/gnew-icon.png" width="80" alt=""></a><p><b>New!</b></p></td>
+                            <td class="icons"><a href=<%= "http://localhost:8080/"+fb_id+"/games"%>><img src="../../images/icons-set_2/games-icon1.png" width="80" alt=""></a><p><b>Games</b></p></td>
+                            <td class="icons"><a href=<%= "http://localhost:8080/"+fb_id+"/books"%>><img src="../../images/icons-set_2/gbooks-icon.png"   width="80" alt="" /></a><p><b>Books</b></p></td>
+                            <td class="icons"><a href=<%= "http://localhost:8080/"+fb_id+"/movies"%>><img src="../../images/icons-set_2/gmovies-icon.png" width="80" alt="" /></a><p><b>Movies</b> </p></td>
+                            <td class="icons"><a href=<%= "http://localhost:8080/"+fb_id+"/music"%>><img src="../../images/icons-set_2/gmusic-icon.png"   width="80" alt="" /></a><p><b>Music</b></p></td>
+                            <td class="icons"><a href=<%= "http://localhost:8080/friends"%>><img src="../../images/icons-set_2/home-icon.png"   width="80" alt="" /></a><p><b>Home</b></p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                        <br>
+                        <table class="items" rules="rows" width="100%" cellspacing="0" cellpadding="3">
+                            <tbody id="ebay_results">
+                                <th align="center">Preview</th>
+                                <th align="center">Title/Link</th>
+                                <th align="center">Price</th>
+                            </tbody>
+                        </table>
+                    <br>
+                </div>
+            </div>
+
+        <div id="games"  style="display: none;"><%= games_likes %></div>
+
+        <script>
+            // Parse the response and build an HTML table to display search results
+            var ebay_app_id = "MarcoRet-RetiApp-PRD-b2f871c91-e2cb3e9e";
+            function _cb_findItemsByKeywords(root) {
+                var items = root.findItemsByKeywordsResponse[0].searchResult[0].item || [];
+                var html = [];
+                
+                for (var i = 0; i < items.length; ++i) {
+                    var item     = items[i];
+                    var title    = item.title;
+                    var selling  = item.sellingStatus[0].currentPrice[0]['__value__'];
+                    var pic      = item.galleryURL;
+                    var viewitem = item.viewItemURL;
+                    if (null != title && null != viewitem) {
+                        html.push('<tr class="items">' +
+                                    '<td class="items">' + '<img src="' + pic + '" border="0">' + '</td>' +
+                                    '<td class="items"><a href="' + viewitem + '" target="_blank">' + title + '</a></td>' +
+                                    '<td class="items">US $' + selling+ '</td></tr>');
+                    }
+                }
+                
+                document.getElementById("ebay_results").innerHTML += html.join("");
+            }
+
+            var games_string = document.getElementById("games").innerHTML;
+            var games_array = games_string.split(",");
+
+            for (var i=0; i<games_array.length; i++) {
+                // Construct the request
+                var url = "http://svcs.ebay.com/services/search/FindingService/v1";
+                url += "?OPERATION-NAME=findItemsByKeywords";
+                url += "&SERVICE-VERSION=1.0.0";
+                url += "&SECURITY-APPNAME=" + ebay_app_id;
+                url += "&GLOBAL-ID=EBAY-US";
+                url += "&RESPONSE-DATA-FORMAT=JSON";
+                url += "&callback=_cb_findItemsByKeywords";
+                url += "&REST-PAYLOAD";
+                url += "&keywords=" + games_array[i];
+                url += "&paginationInput.entriesPerPage=3";
+
+                // Submit the request
+                s = document.createElement('script'); // create script element
+                s.src = url;
+                document.body.appendChild(s);
+            }
+        </script>
+
+        <div id="footer"><!--footer-->
+            <div id="footer_nav">
+                <ul>
+                    <li><a href="http://localhost:8080/homepage">Home</a></li>
+					<li><a href="http://localhost:8080/chisiamo">Chi siamo</a></li>
+					<li><a href="http://localhost:8080/contattaci">Contattaci</a></li>
+					<li><a href="http://localhost:8080/apis">APIs</a></li>
+                </ul>
+            </div>
+            <div class="clr"></div>
+        </div><!--####  wrapper  ###-->
+    </main>
+</body>
+</html> 

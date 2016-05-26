@@ -1,0 +1,76 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel='stylesheet' href='../../stylesheets/homepage.css' />
+</head>
+<body class="container">
+    <main>
+        <div id = "wrapper">
+
+            <br>
+            <br>
+
+            <div id="menu">
+                <div id="menu_top">
+                    <ul>
+                        <li><a href="http://localhost:8080/homepage">Home</a></li>
+                        <li><a href="http://localhost:8080/chisiamo">Chi siamo</a></li>
+                        <li><a href="http://localhost:8080/contattaci">Contattaci</a></li>
+                        <li><a href="http://localhost:8080/apis">APIs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="banner">
+                <img src="../../images/banner.png" height="250" width="960" alt="" />
+            </div>
+            <div id="content_wrapper">
+                <div id="content_midd">
+                    <h1>A quale amico vorresti fare un regalo?</h1>
+                        <br>
+                        <br>
+                        <table class="friends_list" rules="rows" width="100%" cellspacing="0" cellpadding="3">
+                            <tbody id="friends_list">
+                                <tr>
+                                    <td id="items"><img class="fb_picture" src="<%= fb_picture %>" border="0" width="90"></td>
+                                    <td id="items"><a href="<%="http://localhost:8080/"+fb_id+"/homepage"%>">Me (<%= fb_name %>)</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    <br>
+                </div>
+            </div>
+
+        <div id="friends"  style="display: none;"><%= friends_list %></div>
+        <div id="friends_id"  style="display: none;"><%= friends_id_list %></div>
+
+        <script>
+            var friends_string = document.getElementById("friends").innerHTML;
+            var friends_array = friends_string.split(",");
+
+            var friends_id_string = document.getElementById("friends_id").innerHTML;
+            var friends_id_array = friends_id_string.split(",");
+
+            for (var i=0; i<friends_array.length; i++){
+                document.getElementById("friends_list").innerHTML += '<tr class="items">' +
+                        '<td class="items">' + '<img class="fb_picture" src= "https://graph.facebook.com/'+friends_id_array[i]+'/picture?type=large" border="0" width="90">' + '</td>' +
+                        '<td class="items"><a href="http://localhost:8080/'+friends_id_array[i]+'/homepage">'+friends_array[i]+'</a></td>';
+            }
+        </script>
+
+        <div id="footer"><!--footer-->
+            <div id="footer_nav">
+                <ul>
+                    <li><a href="http://localhost:8080/homepage">Home</a></li>
+					<li><a href="http://localhost:8080/chisiamo">Chi siamo</a></li>
+					<li><a href="http://localhost:8080/contattaci">Contattaci</a></li>
+					<li><a href="http://localhost:8080/apis">APIs</a></li>
+                </ul>
+            </div>
+            <div class="clr"></div>
+        </div><!--####  wrapper  ###-->
+    </main>
+</body>
+</html> 
