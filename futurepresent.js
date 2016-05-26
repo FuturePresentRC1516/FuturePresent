@@ -26,13 +26,13 @@ app.use(expressSession({
 	cookie: { secure: false }
 }));
 
-var app_id='1543130752655416';
-var app_secret='6bfeb1a3e3bbed16c0cb143ce128f5cb';
+var app_id='';
+var app_secret='';
 
 var access_token;
 var birthday, music, movies, books, games;
 
-var firebase_secret = 'ZFIXibvnN2uT1u1zlfbTRIX8I1Feqo6hg4hO2Wp4';
+var firebase_secret = '';
 var ref = new Firebase("https://apprc.firebaseio.com");
 
 app.get('/', function(req,res,next){
