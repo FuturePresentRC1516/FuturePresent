@@ -1,5 +1,3 @@
-var DEBUG = false;
-
 var express = require('express');
 var request = require('request');
 var path = require('path');
@@ -11,6 +9,7 @@ var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
 var amqp = require('amqplib/callback_api');
 
+var keys = require ('./keys.json');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -26,14 +25,15 @@ app.use(expressSession({
 	cookie: { secure: false }
 }));
 
-var app_id='';
-var app_secret='';
+var app_id = keys.fb_app_id;
+var app_secret = keys.fb_app_secret;
 
 var access_token;
 var birthday, music, movies, books, games;
 
-var firebase_secret = '';
+var firebase_secret = keys.firebase_secret;
 var ref = new Firebase("https://apprc.firebaseio.com");
+
 
 app.get('/', function(req,res,next){
         res.sendFile(path.join(__dirname, '/public', 'index.html'));
@@ -61,8 +61,7 @@ app.get('/autenticazione',function(req,res,next){
 		
 			if (error) console.log("Login Failed!", error);
 			else{
-				if(DEBUG)
-					console.log("Login Succeeded!", authData);
+				//console.log("Login Succeeded!");
 			}
 		
 		});
@@ -83,8 +82,6 @@ app.get('/autenticazione',function(req,res,next){
 				if(!error && response.statusCode==200){
 					var parsed = JSON.parse(body);
 					access_token = parsed.access_token;
-					if (DEBUG)
-						console.log(access_token);
 
 					var token        = '&access_token=' + access_token;
 					var info_request = '=id,name,games,movies,books,music,birthday,friends,picture.type(large)';
@@ -469,7 +466,7 @@ app.get('/:id/music',function(req,res,next){
 
 var server = app.listen(8080, function() {
 	var port = server.address().port;
- 	console.log('In ascolto sulla porta: ', port);
+ 	console.log('Listening on port: ', port);
  	
  	notificationHandler();
 } );
@@ -606,7 +603,6 @@ function database_check(firebase, f_path, f_auth, id, name, type, user_id){
 		}
 	});
 }
- 	
  	
 
 app.get('/api/friend_birthday',function(req,res,next){
