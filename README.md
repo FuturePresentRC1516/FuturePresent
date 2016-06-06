@@ -8,6 +8,6 @@ Then install [Docker](https://docker.com) and 'docker-compose' (apt-get install 
 
 Now in terminal, in FuturePresent's folder run the command: docker-compose up.
 
-API's documentation is in 'api.txt'.
+API's documentation is [here!](https://github.com/FuturePresentRC1516/FuturePresent/wiki/APIs).
 
 Enjoy!
