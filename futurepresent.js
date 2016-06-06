@@ -96,69 +96,102 @@ app.get('/autenticazione',function(req,res,next){
 							req.fb_id = parsed.id;
 							req.fb_name = parsed.name;
 							req.b_date = parsed.birthday;
+							if (parsed.friends != undefined)
+								req.friends_list = parsed.friends.data;
 
-							// Storing user's name and birthday
-							var usersRef = ref.child("registered_users/" + req.fb_id);
-							usersRef.set({Birthday: req.b_date, Username: req.fb_name});
-							
-							// Storing access_token
-							ref.child("registered_users/" + req.fb_id + "/access_token").set({
-								Token: access_token,
-								Timestamp: new Date().getTime()
+							var firebase = "https://apprc.firebaseio.com/";
+							var f_path   = "registered_users.json";
+							var f_auth   = "?auth="+firebase_secret;
+							request.get(firebase.concat(f_path).concat(f_auth), function(e, r, body) {
+								var parsed = JSON.parse(body);
+								var new_user = true;
+								for (var db_id in parsed) {
+									if(db_id == req.fb_id){
+										new_user = false;
+										// Storing access_token
+										ref.child("registered_users/" + req.fb_id + "/access_token").set({
+											Token: access_token,
+											Timestamp: new Date().getTime()
+										});
+										// Updating friends
+										if (parsed.friends != undefined) {
+											req.friends_list = parsed.friends.data;
+											for (i = 0; i < req.friends_list.length; i++) {
+												ref.child("registered_users/" + req.fb_id + "/friends_list/" + req.friends_list[i].id).set({
+													Username: req.friends_list[i].name
+												});
+											}
+										}
+									}
+								}
+								if (new_user){
+									// This i s a new user
+									// Storing user's name and birthday
+									var usersRef = ref.child("registered_users/" + req.fb_id);
+									usersRef.set({Birthday: req.b_date, Username: req.fb_name});
+									
+									// Storing access_token
+									ref.child("registered_users/" + req.fb_id + "/access_token").set({
+										Token: access_token,
+										Timestamp: new Date().getTime()
+									});
+		
+									// Storing friends
+									if (parsed.friends != undefined) {
+										req.friends_list = parsed.friends.data;
+										for (i = 0; i < req.friends_list.length; i++) {
+											ref.child("registered_users/" + req.fb_id + "/friends_list/" + req.friends_list[i].id).set({
+												Username: req.friends_list[i].name
+											});
+										}
+									}
+		
+									// Storing music
+									if (parsed.music != undefined) {
+										req.music_likes = parsed.music.data;
+										for (i = 0; i < req.music_likes.length; i++) {
+											ref.child("registered_users/" + req.fb_id + "/music_likes/" + req.music_likes[i].id).set({
+												Name: req.music_likes[i].name
+											});
+										}
+									}
+		
+									// Storing books
+									if (parsed.books != undefined) {
+										req.books_likes = parsed.books.data;
+										for (i = 0; i < req.books_likes.length; i++) {
+											ref.child("registered_users/" + req.fb_id + "/books_likes/" + req.books_likes[i].id).set({
+												Name: req.books_likes[i].name
+											});
+										}
+									}
+		
+									// Storing movies
+									if (parsed.movies != undefined) {
+										req.movies_likes = parsed.movies.data;
+										for (i = 0; i < req.movies_likes.length; i++) {
+											ref.child("registered_users/" + req.fb_id + "/movies_likes/" + req.movies_likes[i].id).set({
+												Name: req.movies_likes[i].name
+											});
+										}
+									}
+		
+									// Storing games
+									if (parsed.games != undefined) {
+										req.games_likes = parsed.games.data;
+										for (i = 0; i < req.games_likes.length; i++) {
+											ref.child("registered_users/" + req.fb_id + "/games_likes/" + req.games_likes[i].id).set({
+												Name: req.games_likes[i].name
+											});
+										}
+									}
+								}
 							});
 
-							// Storing friends
-							if (parsed.friends != undefined) {
-								req.friends_list = parsed.friends.data;
-								for (i = 0; i < req.friends_list.length; i++) {
-									ref.child("registered_users/" + req.fb_id + "/friends_list/" + req.friends_list[i].id).set({
-										Username: req.friends_list[i].name
-									});
-								}
-							}
-
-							// Storing music
-							if (parsed.music != undefined) {
-								req.music_likes = parsed.music.data;
-								for (i = 0; i < req.music_likes.length; i++) {
-									ref.child("registered_users/" + req.fb_id + "/music_likes/" + req.music_likes[i].id).set({
-										Name: req.music_likes[i].name
-									});
-								}
-							}
-
-							// Storing books
-							if (parsed.books != undefined) {
-								req.books_likes = parsed.books.data;
-								for (i = 0; i < req.books_likes.length; i++) {
-									ref.child("registered_users/" + req.fb_id + "/books_likes/" + req.books_likes[i].id).set({
-										Name: req.books_likes[i].name
-									});
-								}
-							}
-
-							// Storing movies
-							if (parsed.movies != undefined) {
-								req.movies_likes = parsed.movies.data;
-								for (i = 0; i < req.movies_likes.length; i++) {
-									ref.child("registered_users/" + req.fb_id + "/movies_likes/" + req.movies_likes[i].id).set({
-										Name: req.movies_likes[i].name
-									});
-								}
-							}
-
-							// Storing games
-							if (parsed.games != undefined) {
-								req.games_likes = parsed.games.data;
-								for (i = 0; i < req.games_likes.length; i++) {
-									ref.child("registered_users/" + req.fb_id + "/games_likes/" + req.games_likes[i].id).set({
-										Name: req.games_likes[i].name
-									});
-								}
-							}
-						}
+							
+						} ///if (!e && r.statusCode == 200) 
 						else console.log("error =" + e + "\nstatus code =" +r.statusCode + "\n_\n" + body);
-						next();
+						setTimeout(function(){next();}, 500);
 					});
                 }});
 }, function(req, res, next){
@@ -174,6 +207,7 @@ app.get('/autenticazione',function(req,res,next){
 	}
 	if (req.movies_likes != undefined){
 		for (var i=0; i<req.movies_likes.length; i++) movies_array.push(req.movies_likes[i].name);
+		console.log("req.movies_likes[i].name : " + req.movies_likes[i].name);
 	}
 	if (req.friends_list != undefined){
 		for (var i=0; i<req.friends_list.length; i++) friends_array.push(req.friends_list[i].name);
@@ -476,7 +510,7 @@ var server = app.listen(8080, function() {
  function notificationHandler(){
  	// Authentication on Firebase
 	ref.authWithCustomToken(firebase_secret, function(error, authData) {
-		if (error) console.log("Login Failed!", error);
+		if (error) console.log("Firebase login Failed!", error);
 		else{
 			console.log("Checking new likes....");
 		}
@@ -491,6 +525,11 @@ var server = app.listen(8080, function() {
 		var f_auth   = "?auth="+firebase_secret;
 		
 		request.get(firebase.concat(f_path).concat(f_auth), function(e, r, body) {
+			if(!body){
+				console.log("Firebase: request error");
+				setTimeout(function(){notificationHandler();}, 10000);
+				return;
+			}
 			var parsed = JSON.parse(body);
 			if(parsed != undefined){
 				var timestamp = parsed.Timestamp;
@@ -633,7 +672,7 @@ app.get('/api/friend_birthday',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', birthday : ''});
+			res.json({status : 'error', birthday : undefined});
 			return;
 		});
 	}
@@ -663,11 +702,11 @@ app.get('/api/friend_movies',function(req,res,next){
 							return;
 						}
 					}
-					res.json({status : 'error', movies : 'undefined'});
+					res.json({status : 'error', movies : undefined});
 					return;
 				}
 			}
-			res.json({status : 'error', movies : 'undefined'});
+			res.json({status : 'error', movies : undefined});
 			return;
 		});
 	}
@@ -697,11 +736,11 @@ app.get('/api/friend_games',function(req,res,next){
 							return;
 						}
 					}
-					res.json({status : 'error', games : 'undefined'});
+					res.json({status : 'error', games : undefined});
 					return;
 				}
 			}
-			res.json({status : 'error', games : 'undefined'});
+			res.json({status : 'error', games : undefined});
 			return;
 		});
 	}
@@ -731,11 +770,11 @@ app.get('/api/friend_music',function(req,res,next){
 							return;
 						}
 					}
-					res.json({status : 'error', music : 'undefined'});
+					res.json({status : 'error', music : undefined});
 					return;
 				}
 			}
-			res.json({status : 'error', music : 'undefined'});
+			res.json({status : 'error', music : undefined});
 			return;
 		});
 	}
@@ -765,11 +804,11 @@ app.get('/api/friend_books',function(req,res,next){
 							return;
 						}
 					}
-					res.json({status : 'error', books : 'undefined'});
+					res.json({status : 'error', books : undefined});
 					return;
 				}
 			}
-			res.json({status : 'error', books : 'undefined'});
+			res.json({status : 'error', books : undefined});
 			return;
 		});
 	}
@@ -799,11 +838,11 @@ app.get('/api/friend_likes',function(req,res,next){
 							return;
 						}
 					}
-					res.json({status : 'error', movies : 'undefined', music : 'undefined', games : 'undefined', books : 'undefined'});
+					res.json({status : 'error', movies : undefined, music : undefined, games : undefined, books : undefined});
 					return;
 				}
 			}
-			res.json({status : 'error', movies : 'undefined', music : 'undefined', games : 'undefined', books : 'undefined'});
+			res.json({status : 'error', movies : undefined, music : undefined, games : undefined, books : undefined});
 			return;
 		});
 	}
@@ -828,7 +867,7 @@ app.get('/api/user_birthday',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', birthday : ''});
+			res.json({status : 'error', birthday : undefined});
 			return;
 		});
 	}
@@ -854,7 +893,7 @@ app.get('/api/user_movies',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', movies : 'undefined'});
+			res.json({status : 'error', movies : undefined});
 			return;
 		});
 	}
@@ -880,7 +919,7 @@ app.get('/api/user_music',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', music : 'undefined'});
+			res.json({status : 'error', music : undefined});
 			return;
 		});
 	}
@@ -906,7 +945,7 @@ app.get('/api/user_games',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', games : 'undefined'});
+			res.json({status : 'error', games : undefined});
 			return;
 		});
 	}
@@ -932,7 +971,7 @@ app.get('/api/user_books',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', books : 'undefined'});
+			res.json({status : 'error', books : undefined});
 			return;
 		});
 	}
@@ -959,7 +998,7 @@ app.get('/api/user_likes',function(req,res,next){
 					return;
 				}
 			}
-			res.json({status : 'error', movies : 'undefined', music : 'undefined', games : 'undefined', books : 'undefined'});
+			res.json({status : 'error', movies : undefined, music : undefined, games : undefined, books : undefined});
 			return;
 		});
 	}
