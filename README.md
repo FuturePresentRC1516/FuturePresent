@@ -1,6 +1,6 @@
 # FuturePresent
 
-This is a project for 'Reti di Calcolatori' course (2015/16).
+This is a project for 'Reti di Calcolatori' course (2015/16) Sapienza - Università di Roma.
 
 To run FuturePresent on your own computer you first need to register the application on [Facebook](https://developers.facebook.com/) (a Facebook account is required) and [Firebase](https://www.firebase.com/).
 Once you got the secret keys, put them in the file "keys.json".
