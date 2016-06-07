@@ -2,7 +2,7 @@
 
 This is a project for 'Reti di Calcolatori' course (2015/16).
 
-To run FuturePresent on your own computer you first need to register the application on [Facebook](https://developers.facebook.com/) (you need a Facebook account) and [Firebase](https://www.firebase.com/).
+To run FuturePresent on your own computer you first need to register the application on [Facebook](https://developers.facebook.com/) (a Facebook account is required) and [Firebase](https://www.firebase.com/).
 Once you got the secret keys, put them in the file "keys.json".
 Then install [Docker](https://docker.com) and 'docker-compose' (apt-get install docker-compose).
 
